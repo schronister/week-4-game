@@ -26,10 +26,15 @@ h2{
 img{
 	height:100px;
 	width:160px;
-	margin:0px auto 20px auto;
+	margin:5px auto 0px auto;
+	border:1px solid black;
 }
 
 p{
 	color:black;
 	text-shadow:none;
+}
+
+.hide{
+	display:none;
 }

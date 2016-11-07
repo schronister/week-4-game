@@ -27,25 +27,40 @@ var boba = {
 	cap: 22
 }
 
+var charArray = ["jarjar", "quigon", "darth", "boba"];
+
 //was exploring another way to create the panels
 /*var jarjarpanel = $("<div><p>"+ jarjar.name +"</p><img src="+jarjar.image+">");
 jarjarpanel.addClass("character");*/
-
-var jarjarpanel = $("<div>", {"class":"character"});
+/*
+var jarjarpanel = $("<div>", {"class":"character jarjar"});
 jarjarpanel.append("<p>"+ jarjar.name +"</p>")
 jarjarpanel.append("<img src="+jarjar.image+">");
-var quigonpanel = $("<div>", {"class":"character"});
+var quigonpanel = $("<div>", {"class":"character quigon"});
 quigonpanel.append("<img src="+quigon.image+">");
 var darthpanel = $("<div>", {"class":"character"});
 darthpanel.append("<img src="+darth.image+">");
 var bobapanel = $("<div>", {"class":"character"})
-bobapanel.append("<img src="+boba.image+">");
+bobapanel.append("<img src="+boba.image+">");*/
+
+var playerChar;
 
 $(document).ready(function(){
-	$(".pickCharacter").append(jarjarpanel);
-	$(".pickCharacter").append(quigonpanel);
-	$(".pickCharacter").append(darthpanel);
-	$(".pickCharacter").append(bobapanel);
+	//select player character
+	$("div.character").on("click",function(){
+		//save player's choice
+		playerChar = $(this).attr("id");
+		//hide all other portraits at the top
+		$("div.pickCharacter > .character").addClass("hide");
+		//move player character to the your character area
+		$("div.yourCharacter > #" +playerChar).removeClass("hide");
+		//show enemies
+		for (var i = 0; i < charArray.length; i++){
+			if (playerChar != charArray[i]){
+				$("div.enemies > #" +charArray[i]).removeClass("hide");
+			}
+		}
+	});
 
 
 
