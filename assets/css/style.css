@@ -14,6 +14,10 @@ body{
 	text-align:center;
 }
 
+.character:hover{
+	cursor:pointer;
+}
+
 h1{
 	font-size:38px;
 	text-align:right;
@@ -30,11 +34,15 @@ img{
 	border:1px solid black;
 }
 
-p{
+.character p{
 	color:black;
 	text-shadow:none;
 }
 
 .hide{
 	display:none;
+}
+
+.enemies .character{
+	background:red;
 }
