@@ -1,9 +1,10 @@
+//objects to hold character properties
 var jarjar = {
 	id: "jarjar",
 	name:"Jar-Jar Binks",
 	image: "assets/images/jar-jar.jpg",
-	basehp: 150,
-	hp: 150,
+	basehp: 155,
+	hp: 155,
 	ap: 10,
 	baseap:10,
 	cap: 20
@@ -32,42 +33,21 @@ var boba = {
 	id:"boba",
 	name:"Boba Fett",
 	image: "assets/images/boba-fett.jpeg",
-	basehp: 120,
-	hp: 120,
-	ap: 15,
-	baseap:15,
+	basehp: 135,
+	hp: 135,
+	ap: 20,
+	baseap:20,
 	cap: 22
 }
 
+//initializing a few variables
 var charArray = [jarjar, quigon, darth, boba];
 var enemyArray = [jarjar, quigon, darth, boba];
-
-//was exploring another way to create the panels
-/*var jarjarpanel = $("<div><p>"+ jarjar.name +"</p><img src="+jarjar.image+">");
-jarjarpanel.addClass("character");*/
-/*
-var jarjarpanel = $("<div>", {"class":"character jarjar"});
-jarjarpanel.append("<p>"+ jarjar.name +"</p>")
-jarjarpanel.append("<img src="+jarjar.image+">");
-var quigonpanel = $("<div>", {"class":"character quigon"});
-quigonpanel.append("<img src="+quigon.image+">");
-var darthpanel = $("<div>", {"class":"character"});
-darthpanel.append("<img src="+darth.image+">");
-var bobapanel = $("<div>", {"class":"character"})
-bobapanel.append("<img src="+boba.image+">");*/
-
 var playerChar;
 var charSelected = false;
 var battleStart = false;
 var gameOver = false;
 var enemyChar;
-
-//function for updating the HP of each character on the screen
-function updateHP(){
-	for (var i = 0; i < charArray.length; i++){
-		$("."+charArray[i].id+ " > .HP").html(charArray[i].hp);
-	}
-}
 
 //function to initialize the html with characters from objects
 function init(){
@@ -90,19 +70,21 @@ function init(){
 
 	charSelected=false;
 	battleStart=false;
+	//kick off the game
 	updateHP();
 	game();
 
 	
 }
 
-//program execution begins here after page load.
-$(document).ready(function(){
-	attack();
-	restart();
-	init();
-	
-});
+
+//function for updating the HP of each character on the screen
+function updateHP(){
+	for (var i = 0; i < charArray.length; i++){
+		$("."+charArray[i].id+ " > .HP").html(charArray[i].hp);
+	}
+}
+
 
 //function for handling attacks
 function attack(){
@@ -160,15 +142,16 @@ function restart(){
 		enemyChar = "";
 		//update hp display
 		updateHP();
+		//call init again to restart the game
 		init();
 		//hide all the characters in use, display the ones at the top under pick char.
 		$(".winLoseMessage").empty();
 		$("#restart").addClass("hide");
-
-
 	});
 }
 
+
+//function for processing of character selection.
 function game(){
 	//select player character
 	$(".character").on("click",function(){
@@ -214,3 +197,11 @@ function game(){
 	});
 
 }
+
+//program execution begins here after page load.
+$(document).ready(function(){
+	attack();
+	restart();
+	init();
+	
+});
