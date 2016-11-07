@@ -57,6 +57,7 @@ var bobapanel = $("<div>", {"class":"character"})
 bobapanel.append("<img src="+boba.image+">");*/
 
 var playerChar;
+var charSelected = false;
 var battleStart = false;
 var gameOver = false;
 var enemyChar;
@@ -68,63 +69,54 @@ function updateHP(){
 	}
 }
 
-$(document).ready(function(){
-	updateHP();
-	//select player character
-	$("div.pickCharacter > .character").on("click",function(){
-		//save player's choice as an object
-		for (var i = 0; i < charArray.length; i++){
-			if ( $(this).attr("class").includes(charArray[i].id)){
-				playerChar = charArray[i];
-			}
-		}
-/*		playerChar = $(this).attr("id");*/
-		enemyArray.splice(enemyArray.indexOf(playerChar),1);
-		//hide all other portraits at the top
-		$("div.pickCharacter > .character").addClass("hide");
-		//move player character to the your character area
-		$("div.yourCharacter > ." +playerChar.id).removeClass("hide");
-		//show enemies
-		for (var i = 0; i < charArray.length; i++){
-			if (playerChar != charArray[i]){
-				$("div.enemies > ." +charArray[i].id).removeClass("hide");
-			}
-		}
-	});
-	//picking an enemy
-	$("div.enemies > .character").on("click",function(){
-		if (battleStart===false){
-			//set enemyChar = object from chararray
-			for (var i = 0; i < charArray.length; i++){
-				if ($(this).attr("class").includes(charArray[i].id)){
-				enemyChar = charArray[i];
-				}
-			}
-			//remove selected enemy from enemy array
-			enemyArray.splice(enemyArray.indexOf(enemyChar),1);
-			$("div.enemies > ." + enemyChar.id).addClass("hide");
-			//show enemy in the defender section
-			$("div.defender > ." + enemyChar.id).removeClass("hide");
-			//start battle so that enemies can't be selected
-			battleStart = true;
-			//clear the win/loss message in between enemies.
-			$(".winLoseMessage").empty();
-		}
-	});
+//function to initialize the html with characters from objects
+function init(){
+	$("div.pickCharacter").empty();
+	$("div.yourCharacter").empty();
+	$("div.enemies").empty();
+	$("div.defender").empty();
+	for (var k = 0; k < charArray.length; k++){
+			charArray[k].hp = charArray[k].basehp;
+			charArray[k].ap = charArray[k].baseap;
+	}
+	for (var i = 0; i < charArray.length; i++){
+		$("div.pickCharacter").append("<div class='character " +  charArray[i].id + "'>")
+	}
+	for (var j = 0; j <charArray.length; j++){
+		$("."+charArray[j].id).append("<p class='name'>"+charArray[j].name+"</p>")
+		$("."+charArray[j].id).append("<img src='"+charArray[j].image+"'>")
+		$("."+charArray[j].id).append("<p class='HP'>"+charArray[j].hp+"</p>")
+	}
 
+	charSelected=false;
+	battleStart=false;
+	updateHP();
+	game();
+
+	
+}
+
+//program execution begins here after page load.
+$(document).ready(function(){
+	attack();
+	restart();
+	init();
+	
+});
+
+//function for handling attacks
+function attack(){
 	$("#attack").on("click",function(){
 		if (gameOver === false && battleStart === true){
 			//remove hp on both sides
 			enemyChar.hp -= playerChar.ap;
 			playerChar.hp -= enemyChar.cap;
-			//adjust player ap - add ap.
-			playerChar.ap += playerChar.baseap;
-
-
-			//update the HP for each character
+			//update the HP display for each character
 			updateHP();
 			$(".attackMessage").html("You attacked "+ enemyChar.name + " for "+playerChar.ap+" damage.")
 			$(".defendMessage").html(enemyChar.name + " attacked you back for " + enemyChar.cap + " damage.")
+			//adjust player ap - add ap.
+			playerChar.ap += playerChar.baseap;
 			//if enemy hp is at 0 or under, end battle and prepare to select a new character
 			if(enemyChar.hp <= 0){
 				//if there are no enemies left to fight, game over - player wins
@@ -153,39 +145,72 @@ $(document).ready(function(){
 			}
 		}
 
+	});
+}
 
-
-	})
-
-	//restarting the game
-	$("#restart").on("click", function(){
+//function for restarting the game
+function restart(){
+		$("#restart").on("click", function(){
 		gameOver = false;
 		//reset the enemy array 
 		enemyArray = [jarjar, quigon, darth, boba];
 		//reset the hp and ap for each character
-		for (var i = 0; i < charArray.length; i++){
-			charArray[i].hp = charArray[i].basehp;
-			charArray[i].ap = charArray[i].baseap;
-		}
 		//remove char selections
 		playerChar = "";
 		enemyChar = "";
 		//update hp display
 		updateHP();
+		init();
 		//hide all the characters in use, display the ones at the top under pick char.
-		$("div.pickCharacter > .character").removeClass("hide");
-		$("div.yourCharacter > .character").addClass("hide");
-		$("div.enemies > .character").addClass("hide");
-		$("div.defender > .character").addClass("hide");
 		$(".winLoseMessage").empty();
 		$("#restart").addClass("hide");
 
 
-	})
+	});
+}
 
+function game(){
+	//select player character
+	$(".character").on("click",function(){
+		if (charSelected === false){
+			charSelected = true;
+			//save player's choice as an object
+			for (var i = 0; i < charArray.length; i++){
+				if ( $(this).attr("class").includes(charArray[i].id)){
+					playerChar = charArray[i];
+				}
+			}
+			//remove player char from enemy array
+			enemyArray.splice(enemyArray.indexOf(playerChar),1);
+			//hide all other portraits at the top
+			//move player character to the your character area
+			$("div.yourCharacter").append($("."+playerChar.id));
+			//show enemies
+			for (var i = 0; i < charArray.length; i++){
+				if (playerChar != charArray[i]){
+					$("div.enemies").append($("."+charArray[i].id));
+				}
+			}
+			return;
+		}
 
+		if (battleStart===false){
+			
+			//set enemyChar = object from chararray
+			for (var i = 0; i < charArray.length; i++){
+				if ($(this).attr("class").includes(charArray[i].id)){
+				enemyChar = charArray[i];
+				}
+			}
+			//remove selected enemy from enemy array
+			enemyArray.splice(enemyArray.indexOf(enemyChar),1);
+			//show enemy in the defender section
+			$("div.defender").append($("."+enemyChar.id));
+			//start battle so that enemies can't be selected
+			battleStart = true;
+			//clear the win/loss message in between enemies.
+			$(".winLoseMessage").empty();
+		}
+	});
 
-
-
-
-});
+}
