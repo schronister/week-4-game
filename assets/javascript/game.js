@@ -48,6 +48,8 @@ var charSelected = false;
 var battleStart = false;
 var gameOver = false;
 var enemyChar;
+var loseAudio = new Audio("http://www.thesoundarchive.com/starwars/empire/laughfuzzball.mp3");
+var winAudio = new Audio("http://www.thesoundarchive.com/starwars/force.mp3");
 
 //function to initialize the html with characters from objects
 function init(){
@@ -107,6 +109,7 @@ function attack(){
 					$(".attackMessage").empty();
 					$(".defendMessage").empty();
 					$(".winLoseMessage").html("You Win! The Force is strong with you.")
+					winAudio.play();
 					$("#restart").removeClass("hide");
 				} else{
 				battleStart=false;
@@ -120,6 +123,7 @@ function attack(){
 			if (playerChar.hp <= 0){
 				battleStart=false;
 				gameOver=true;
+				loseAudio.play();
 				$(".attackMessage").empty();
 				$(".defendMessage").empty();
 				$(".winLoseMessage").html("You have been defeated! Game over.")
