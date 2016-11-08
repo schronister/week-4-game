@@ -12,7 +12,7 @@ var jarjar = {
 var quigon = {
 	id: "quigon",
 	name:"Qui-gon Jinn",
-	image: "assets/images/qui-gon.jpeg",
+	image: "assets/images/Qui-Gon.jpeg",
 	basehp: 200,
 	hp: 200,
 	ap: 15,
@@ -22,7 +22,7 @@ var quigon = {
 var darth = {
 	id: "darth",
 	name:"Darth Vader",
-	image: "assets/images/darth-vader.jpeg",
+	image: "assets/images/Darth-Vader.jpeg",
 	basehp: 180,
 	hp: 180,
 	ap: 10,
