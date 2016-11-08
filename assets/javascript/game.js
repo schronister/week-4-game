@@ -104,7 +104,7 @@ function attack(){
 			//if enemy hp is at 0 or under, end battle and prepare to select a new character
 			if(enemyChar.hp <= 0){
 				//if there are no enemies left to fight, game over - player wins
-				if (enemyArray.length === 0){
+				if (enemyArray.length === 0 && playerChar.hp>0){
 					battleStart = false;
 					$(".attackMessage").empty();
 					$(".defendMessage").empty();
