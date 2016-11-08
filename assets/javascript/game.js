@@ -53,6 +53,7 @@ var winAudio = new Audio("http://www.thesoundarchive.com/starwars/force.mp3");
 
 //function to initialize the html with characters from objects
 function init(){
+	$("#pick").html("Pick a Character:");
 	$("div.pickCharacter").empty();
 	$("div.yourCharacter").empty();
 	$("div.enemies").empty();
@@ -159,6 +160,7 @@ function restart(){
 function game(){
 	//select player character
 	$(".character").on("click",function(){
+		$("#pick").empty();
 		if (charSelected === false){
 			charSelected = true;
 			//save player's choice as an object
